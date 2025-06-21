@@ -5,9 +5,9 @@ export const SocialLogins = () => {
   return (
     <div>
       <h4>Or sign in with:</h4>
-      <a href={`${backend}/auth/google`}><button>Google</button></a>
-      <a href={`${backend}/auth/facebook`}><button>Facebook</button></a>
-      <a href={`${backend}/auth/microsoft`}><button>Microsoft</button></a>
+      <a href={`${backend}/auth/google`}><button type="button">Google</button></a>
+      <a href={`${backend}/auth/facebook`}><button type="button">Facebook</button></a>
+      <a href={`${backend}/auth/microsoft`}><button type="button">Microsoft</button></a>
     </div>
   );
 };

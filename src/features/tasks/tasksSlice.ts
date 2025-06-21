@@ -21,16 +21,10 @@ const initialState: TasksState = {
   error: null,
 };
 
-export const fetchTasks = createAsyncThunk(
-  'tasks/fetchTasks',
-  async (_, thunkAPI) => {
-    const token = (thunkAPI.getState() as any).auth.token;
-    const response = await api.get('/tasks', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  }
-);
+export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
+  const res = await api.get("/tasks");
+  return res.data;
+});
 
 const tasksSlice = createSlice({
   name: 'tasks',
