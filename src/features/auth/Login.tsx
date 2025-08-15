@@ -3,6 +3,15 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { login } from "./authSlice";
 import { Navigate, Link } from "react-router-dom";
 import { SocialLogins } from "./SocialLogins";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button as MuiButton,
+  Link as MuiLink,
+  CircularProgress,
+} from "@mui/material";
 
 export const Login = () => {
   const dispatch = useAppDispatch();
@@ -19,32 +28,80 @@ export const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 300, margin: "40px auto" }}>
-      <h2>Login</h2>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        required
-        style={{ display: "block", width: "100%", marginBottom: 8 }}
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        required
-        style={{ display: "block", width: "100%", marginBottom: 8 }}
-      />
-      <button type="submit" disabled={status === "loading"}>
-        {status === "loading" ? "Logging in..." : "Login"}
-      </button>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <div style={{ margin: "16px 0" }}>
-        <Link to="/signup">Don't have an account? Sign up</Link>
-      </div>
-      <SocialLogins />
-    </form>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      bgcolor="#f5f6fa"
+    >
+      <Paper elevation={3} sx={{ p: 4, borderRadius: 3, width: 400 }}>
+        <form onSubmit={handleSubmit}>
+          <Typography
+            variant="h5"
+            align="center"
+            mb={3}
+            color="primary.main"
+            fontWeight={600}
+          >
+            Login
+          </Typography>
+          <TextField
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
+            autoComplete="email"
+          />
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            required
+            margin="normal"
+            autoComplete="current-password"
+          />
+          {error && (
+            <Typography color="error" align="center" mt={1} mb={1}>
+              {error}
+            </Typography>
+          )}
+          <MuiButton
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2, mb: 1, fontWeight: 600 }}
+            disabled={status === "loading"}
+            startIcon={
+              status === "loading" ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : null
+            }
+          >
+            {status === "loading" ? "Logging in..." : "Login"}
+          </MuiButton>
+          <Box textAlign="center" mt={2}>
+            <MuiLink
+              component={Link}
+              to="/signup"
+              color="primary"
+              underline="hover"
+              fontWeight={500}
+            >
+              Don't have an account? Sign up
+            </MuiLink>
+          </Box>
+          <Box mt={3} display="flex" justifyContent="center">
+            <SocialLogins />
+          </Box>
+        </form>
+      </Paper>
+    </Box>
   );
 };
