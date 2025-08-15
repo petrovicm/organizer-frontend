@@ -26,36 +26,32 @@ export const login = createAsyncThunk(
   "auth/login",
   async (
     credentials: { email: string; password: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const res = await api.post("/login", credentials);
       localStorage.setItem("token", res.data.token);
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.message || "Login failed"
-      );
+      return rejectWithValue(err.response?.data?.message || "Login failed");
     }
-  }
+  },
 );
 
 export const signup = createAsyncThunk(
   "auth/signup",
   async (
     credentials: { email: string; password: string; name: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const res = await api.post("/signup", credentials);
       localStorage.setItem("token", res.data.token);
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.message || "Signup failed"
-      );
+      return rejectWithValue(err.response?.data?.message || "Signup failed");
     }
-  }
+  },
 );
 
 export const fetchMe = createAsyncThunk(
@@ -69,7 +65,7 @@ export const fetchMe = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue("Could not fetch user");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({

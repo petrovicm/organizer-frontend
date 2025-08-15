@@ -1,10 +1,17 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { Provider } from "react-redux";
+
+import { store } from "@/app/store";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { Login } from "./features/auth/Login";
 import { Signup } from "./features/auth/Signup";
 import { AuthCallback } from "./features/auth/AuthCallback";
-import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { logout } from "./features/auth/authSlice";
+import Expenses from "./features/expenses/Expenses";
+import Categories from "./features/categories/Categories";
+import MainLayout from "./layouts/MainLayout";
+import ProtectedRoute from "@/features/auth/ProtectedRoute";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -26,14 +33,41 @@ const Home = () => {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="expenses"
+              element={
+                <ProtectedRoute>
+                  <Expenses />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="categories"
+              element={
+                <ProtectedRoute>
+                  <Categories />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

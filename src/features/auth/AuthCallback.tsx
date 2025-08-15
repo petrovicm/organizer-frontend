@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
-import { setToken } from "./authSlice";
+import { setToken, fetchMe } from "./authSlice";
 
 export const AuthCallback = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,9 @@ export const AuthCallback = () => {
     if (token) {
       dispatch(setToken(token));
       localStorage.setItem("token", token);
-      navigate("/");
+      dispatch(fetchMe()).then(() => {
+        navigate("/");
+      });
     }
   }, [dispatch, navigate]);
 
