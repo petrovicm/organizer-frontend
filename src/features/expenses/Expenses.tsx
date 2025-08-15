@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { SelectChangeEvent } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchExpenses, addExpense, deleteExpense } from "./expensesSlice";
@@ -52,10 +53,25 @@ const Expenses: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type } = e.target;
+    if (type === "checkbox") {
+      setForm((prev) => ({
+        ...prev,
+        [name]: (e.target as HTMLInputElement).checked,
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSelectChange = (e: SelectChangeEvent) => {
+    const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name as string]: value,
     }));
   };
 
@@ -207,7 +223,7 @@ const Expenses: React.FC = () => {
                 name="categoryId"
                 value={form.categoryId}
                 label="Category"
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 required
               >
                 {categoriesList.map((cat) => (
@@ -240,7 +256,7 @@ const Expenses: React.FC = () => {
                 name="frequency"
                 value={form.frequency}
                 label="Frequency"
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 required
               >
                 <MenuItem value="one_time">One Time</MenuItem>
@@ -264,7 +280,7 @@ const Expenses: React.FC = () => {
                 name="nws"
                 value={form.nws}
                 label="NWS"
-                onChange={handleChange}
+                onChange={handleSelectChange}
                 required
               >
                 <MenuItem value="need">Need</MenuItem>

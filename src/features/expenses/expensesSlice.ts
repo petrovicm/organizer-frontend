@@ -5,9 +5,25 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export type Expense = {
   id: number;
-  description: string;
+  title?: string;
+  description?: string;
   amount: number;
-  date: string;
+  date?: string;
+  currencyCode?: string;
+  startDate?: string;
+  endDate?: string;
+  frequency?: string;
+  interval?: number;
+  nws?: string;
+  isActive?: boolean;
+  note?: string;
+  Category: {
+    id: number;
+    name: string;
+    color?: string;
+    icon?: string;
+    defaultNws?: string;
+  };
 };
 
 export const fetchExpenses = createAsyncThunk(
