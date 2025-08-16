@@ -51,7 +51,8 @@ const Categories: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number | undefined) => {
+    if (!id) return;
     await dispatch(deleteCategory(id));
   };
 

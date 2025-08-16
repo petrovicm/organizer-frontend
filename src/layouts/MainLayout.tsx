@@ -5,6 +5,7 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Toolbar,
@@ -73,7 +74,7 @@ const MainLayout: React.FC = () => {
             borderRadius: 0,
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ minHeight: 48, px: "12px!important" }}>
             <IconButton
               onClick={() => setSidebarOpen((open) => !open)}
               size="large"
@@ -99,7 +100,6 @@ const MainLayout: React.FC = () => {
                   edge="end"
                   color="inherit"
                   onClick={handleMenu}
-                  sx={{ ml: 1 }}
                 >
                   {user?.avatar ? (
                     <Avatar src={user.avatar} alt={user.name} />
@@ -113,6 +113,11 @@ const MainLayout: React.FC = () => {
                   onClose={handleClose}
                   anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                   transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  PaperProps={{
+                    sx: {
+                      borderRadius: 0, // Remove border radius
+                    },
+                  }}
                 >
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
@@ -126,7 +131,7 @@ const MainLayout: React.FC = () => {
           variant="permanent"
           open={sidebarOpen}
           sx={{
-            width: sidebarOpen ? drawerWidth : 64,
+            width: sidebarOpen ? drawerWidth : 48,
             flexShrink: 0,
             transition: (theme) =>
               theme.transitions.create("width", {
@@ -134,11 +139,11 @@ const MainLayout: React.FC = () => {
                 duration: theme.transitions.duration.enteringScreen,
               }),
             [`& .MuiDrawer-paper`]: {
-              width: sidebarOpen ? drawerWidth : 64,
+              width: sidebarOpen ? drawerWidth : 48,
               boxSizing: "border-box",
               background: "#fff",
               borderRight: "1px solid #e0e0e0",
-              pt: 8,
+              borderRadius: 0, // Remove border radius
               transition: (theme) =>
                 theme.transitions.create("width", {
                   easing: theme.transitions.easing.sharp,
@@ -150,38 +155,47 @@ const MainLayout: React.FC = () => {
         >
           <Toolbar
             sx={{
-              minHeight: 64,
+              minHeight: 48,
             }}
           />
           <List>
             {navItems.map((item) => (
-              <ListItem
-                button
-                key={item.label}
-                component={Link}
-                to={item.path}
-                selected={location.pathname === item.path}
-                sx={{
-                  borderRadius: 2,
-                  mx: 1,
-                  mb: 0.5,
-                  background:
-                    location.pathname === item.path ? "#e3f2fd" : undefined,
-                  justifyContent: sidebarOpen ? "flex-start" : "center",
-                  px: sidebarOpen ? 2 : 1,
-                }}
-              >
-                <ListItemIcon
+              <ListItem key={item.label} disablePadding sx={{ mb: 1 }}>
+                <ListItemButton
+                  component={Link}
+                  to={item.path}
+                  selected={location.pathname === item.path}
                   sx={{
-                    color: "primary.main",
-                    minWidth: 0,
-                    mr: sidebarOpen ? 2 : "auto",
-                    justifyContent: "center",
+                    height: 48,
+                    background:
+                      location.pathname === item.path ? "#e3f2fd" : undefined,
+                    justifyContent: sidebarOpen ? "flex-start" : "center",
+                    px: 0.5,
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
-                {sidebarOpen && <ListItemText primary={item.label} />}
+                  <ListItemIcon
+                    sx={{
+                      color: "primary.main",
+                      minWidth: 40, // MUI default for spacing
+                      mr: sidebarOpen ? 2 : 0,
+                      justifyContent: "center",
+                      minHeight: 0,
+                      height: 48,
+                      display: "flex",
+                      alignItems: "center",
+                      width: sidebarOpen ? undefined : "100%", // Only full width when collapsed
+                      transition: "width 0.2s",
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  {sidebarOpen && (
+                    <ListItemText
+                      primary={item.label}
+                      sx={{ opacity: 1, transition: "opacity 0.2s" }}
+                    />
+                  )}
+                </ListItemButton>
               </ListItem>
             ))}
           </List>
@@ -204,9 +218,6 @@ const MainLayout: React.FC = () => {
             maxWidth: 1200,
             mx: "auto",
             overflow: "auto",
-            borderRadius: 3,
-            background: "#fff",
-            boxShadow: 2,
           }}
         >
           <Outlet />
